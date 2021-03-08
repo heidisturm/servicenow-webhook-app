@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_254212_workgridg.WorkgridUtils</api_name>
+        <caller_access/>
+        <client_callable>true</client_callable>
+        <description>Utils Script Include for the Workgrid application.</description>
+        <name>WorkgridUtils</name>
+        <script><![CDATA[var WorkgridUtils = Class.create();
+WorkgridUtils.prototype = {
+	initialize: function() {	
+	},
+	
+	sendWorkgridRequestDetails: function(sys_id, isDelete, callingFunc, isChildCall, scRequest, current){
+		try { 
+			this.log(false, sys_id, callingFunc, 'entered');
+			
+			// If child call and request sys updated on as recent then ignore
+			if (isChildCall) {
+				this.log(false, sys_id, callingFunc, 'Child call and current.sys_updated_on ' + current.sys_updated_on + ' scRequest.sys_updated_on ' + scRequest.sys_updated_on);
+				if (current.sys_updated_on <= scRequest.sys_updated_on) {
+					this.log(false, sys_id, callingFunc, 'scRequest was updated at least as recently as child so not sending to workgrid.');
+					return;
+				}
+			}
+			
+			var r = this.getRESTMessage(sys_id, callingFunc);
+			r.setRequestBody('');
+			var jsonRequest = {
+				sys_id: '' + sys_id,
+				"isDelete": isDelete,
+				"isRequest": true
+			};
+			this.executeRequest(sys_id, callingFunc, r, jsonRequest);
+		}
+		catch(ex) {
+			this.log(true, sys_id, callingFunc, 'Error calling workgrid ' + ex);
+		}
+		this.log(false, sys_id, callingFunc, 'leaving');
+	},
+	
+	sendWorkgridRequestItemDeleted: function(sys_id, current, callingFunc){
+		try { 
+			this.log(false, sys_id, callingFunc, 'entered');
+			// Send message that request item is deleted with the request item id
+			// TODO - we should update "callingFunc" in the calls to sendWorkgridRequestDetails to avoid confusion
+			this.sendWorkgridRequestDetails(current.documentkey, true, callingFunc, false);
+			this.log(false, sys_id, callingFunc, 'Parse XML');
+			var xmlDoc = new XMLDocument2();
+			xmlDoc.parseXML(current.payload);
+			this.log(false, sys_id, callingFunc, 'Get request ID');
+			var requestID = xmlDoc.getNodeText("//request");
+			this.log(false, sys_id, callingFunc,'requestID is ' + requestID);
+			// Send message that request is updated with the request id			
+			this.sendWorkgridRequestDetails(requestID, false, callingFunc, false);
+		}
+		catch(ex) {
+			this.log(true, sys_id, callingFunc, 'Error calling workgrid ' + ex);
+		}
+		this.log(false, sys_id, callingFunc, 'leaving');
+	},
+	
+	sendWorkgridDelegateDetails: function(sys_id, isInsert, isUpdate, isDelete, callingFunc, current){
+		try { 
+			this.log(false, sys_id, callingFunc, 'entered');
+			var r = this.getRESTMessage(sys_id, callingFunc);
+			var jsonRequest;
+			if (isDelete) {
+				this.log(false, sys_id, callingFunc, 'Parse XML');
+				var xmlDoc = new XMLDocument2();
+				xmlDoc.parseXML(current.payload);
+				this.log(false, sys_id, callingFunc, 'Get User ID');
+				var userID = xmlDoc.getNodeText("//user");
+				this.log(false, sys_id, callingFunc,'userID is ' + userID);
+				jsonRequest = { sys_id: '' + sys_id,
+							    user_id: userID,
+							    isDelete: isDelete,
+							    isDelegate: true };
+			} else {
+				jsonRequest = { sys_id: '' + sys_id,
+								isInsert: isInsert,
+								isUpdate: isUpdate,
+							    isDelete: isDelete,
+							    delegate_id: '' + current.delegate,
+							    delegateEmail: '' + current.delegate.email,
+							    delegateFirstName: '' + current.delegate.first_name,
+							    delegateLastName: '' + current.delegate.last_name,
+							    user_id: '' + current.user,
+							    ends: '' + current.ends,
+							    starts: '' + current.starts,
+							    approvals: '' + current.approvals,
+								isDelegate: true };
+			}
+			this.executeRequest(sys_id, callingFunc, r, jsonRequest);
+		}
+		catch(ex) {
+			this.log(true, sys_id, callingFunc, 'Error calling workgrid ' + ex);
+		}
+		this.log(false, sys_id, callingFunc, 'leaving');
+	},
+	
+	getRESTMessage: function(sys_id, callingFunc){
+		//this.log(false, sys_id, callingFunc, 'getRESTMessage');
+		var r = new sn_ws.RESTMessageV2('x_254212_workgridg.Workgrid REST Request', 'Post');
+		var workgridBaseUrl = gs.getProperty('x_254212_workgridg.workgridBaseUrl');
+		var connectorInstanceID = gs.getProperty('x_254212_workgridg.connectorInstanceID');
+		var endpoint = workgridBaseUrl + '/webhook/connectors/public/' + connectorInstanceID;
+		this.log(false, sys_id, callingFunc, 'endpoint is ' + endpoint);
+		r.setEndpoint(endpoint);
+		//TODO: override authentication profile 
+		//authentication type ='basic'/ 'oauth2'
+		//r.setAuthentication(authentication type, profile name);
+		return r;
+	},
+	
+	executeRequest: function(sys_id, callingFunc, r, jsonRequest){
+		var stringRequest = JSON.stringify(jsonRequest);
+		r.setRequestBody(stringRequest);
+		this.log(false, sys_id, callingFunc, 'calling workgrid with ' + stringRequest);
+
+		var MAC_ALG = "HmacSHA1";
+		var key = gs.getProperty('x_254212_workgridg.connectorApiKey');
+		var encrypted = CryptoJS.HmacSHA1(stringRequest, key);
+		this.log(false, sys_id, callingFunc, 'encrypted is ' + encrypted);
+		r.setRequestHeader("X-ServiceNow-Workgrid-Signature", encrypted);
+		var response = r.execute();
+		var responseBody = response.getBody();
+		var httpStatus = response.getStatusCode();
+		return r;
+	},
+	
+	log: function(isError, sys_id, callingFunc, msg){
+		var gdt = new GlideDateTime();
+		if (isError) {
+			gs.error(gdt.getNumericValue() + ' ' + callingFunc + ' ' + sys_id + ' ' + msg);
+		} else {
+			gs.info(gdt.getNumericValue() + ' ' + callingFunc + ' ' + sys_id + ' ' + msg);
+		}
+	},
+	
+    type: 'WorkgridUtils'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-09-17 11:56:47</sys_created_on>
+        <sys_id>ab7ed82edb202300241de1bb4b961925</sys_id>
+        <sys_mod_count>100</sys_mod_count>
+        <sys_name>WorkgridUtils</sys_name>
+        <sys_package display_value="Workgrid" source="x_254212_workgridg">62321899db20230045cbeb41ca961956</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Workgrid">62321899db20230045cbeb41ca961956</sys_scope>
+        <sys_update_name>sys_script_include_ab7ed82edb202300241de1bb4b961925</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-02-22 16:49:49</sys_updated_on>
+    </sys_script_include>
+</record_update>
