@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties">
+    <sys_properties action="INSERT_OR_UPDATE">
+        <choices/>
+        <description>Connector API Key for communication with Workgrid.</description>
+        <ignore_cache>false</ignore_cache>
+        <is_private>true</is_private>
+        <name>x_254212_workgridg.connectorApiKey</name>
+        <read_roles/>
+        <suffix>connectorApiKey</suffix>
+        <sys_class_name>sys_properties</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-11-01 14:51:43</sys_created_on>
+        <sys_id>8c28b0c1dba12300241de1bb4b961939</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_name>x_254212_workgridg.connectorApiKey</sys_name>
+        <sys_package display_value="Workgrid" source="x_254212_workgridg">62321899db20230045cbeb41ca961956</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Workgrid">62321899db20230045cbeb41ca961956</sys_scope>
+        <sys_update_name>sys_properties_8c28b0c1dba12300241de1bb4b961939</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-02-19 13:47:32</sys_updated_on>
+        <type>password</type>
+        <value>{{dflt-gpaes}}Kv9Nu2IlReY0RNYGMW+vzg==</value>
+        <write_roles/>
+    </sys_properties>
+    <sys_translated_text action="delete_multiple" query="documentkey=8c28b0c1dba12300241de1bb4b961939"/>
+</record_update>

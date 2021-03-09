@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties_category_m2m">
+    <sys_properties_category_m2m action="INSERT_OR_UPDATE">
+        <category display_value="Workgrid Properties">a7c37dbbdbe02300241de1bb4b9619f0</category>
+        <order>200</order>
+        <property display_value="x_254212_workgridg.connectorInstanceID" name="x_254212_workgridg.connectorInstanceID">f6b5313fdbe02300241de1bb4b961940</property>
+        <sys_class_name>sys_properties_category_m2m</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-09-21 15:20:24</sys_created_on>
+        <sys_id>9106fdbbdbe02300241de1bb4b961972</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>x_254212_workgridg.connectorInstanceID.Workgrid Properties</sys_name>
+        <sys_package display_value="Workgrid" source="x_254212_workgridg">62321899db20230045cbeb41ca961956</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Workgrid">62321899db20230045cbeb41ca961956</sys_scope>
+        <sys_update_name>sys_properties_category_m2m_9106fdbbdbe02300241de1bb4b961972</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-09-21 15:26:04</sys_updated_on>
+    </sys_properties_category_m2m>
+</record_update>

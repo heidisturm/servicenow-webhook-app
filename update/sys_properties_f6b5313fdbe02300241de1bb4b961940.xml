@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties">
+    <sys_properties action="INSERT_OR_UPDATE">
+        <choices/>
+        <description>Workgrid connector instance ID e.g. a027200d-2807-4782-a3bd-b9bcd094c84d_5b2764f9-552e-4d05-af5a-f055e4f06a12</description>
+        <ignore_cache>false</ignore_cache>
+        <is_private>true</is_private>
+        <name>x_254212_workgridg.connectorInstanceID</name>
+        <read_roles/>
+        <suffix>connectorInstanceID</suffix>
+        <sys_class_name>sys_properties</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-09-21 15:19:47</sys_created_on>
+        <sys_id>f6b5313fdbe02300241de1bb4b961940</sys_id>
+        <sys_mod_count>15</sys_mod_count>
+        <sys_name>x_254212_workgridg.connectorInstanceID</sys_name>
+        <sys_package display_value="Workgrid" source="x_254212_workgridg">62321899db20230045cbeb41ca961956</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Workgrid">62321899db20230045cbeb41ca961956</sys_scope>
+        <sys_update_name>sys_properties_f6b5313fdbe02300241de1bb4b961940</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2021-02-19 13:47:55</sys_updated_on>
+        <type>string</type>
+        <value>cdebf793-0f64-4821-8a2c-98113338a9ad_63e10953-e5b6-4ec5-bd22-4d8474aa76a0</value>
+        <write_roles/>
+    </sys_properties>
+    <sys_translated_text action="delete_multiple" query="documentkey=f6b5313fdbe02300241de1bb4b961940"/>
+</record_update>
