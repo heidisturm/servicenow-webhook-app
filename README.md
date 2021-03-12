@@ -1,21 +1,5 @@
-# Workgrid ServiceNow Webhook App
-
-![](https://img.shields.io/github/license/workgrid/servicenow-webhook-app)
-
-# Development Process
-
-All code intended for production use must:
-
-1. Be introduced as a pull request targeting the `main` branch.
-2. All pull requests must have a reference to the internal change management ticket by including it in the pull request title or description (e.g. ETSWORK-####)
-3. All code must be approved by at least two reviewers as well as any defined [code owners](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners) in accordance with our internally documented code review guidelines
-  1. At least one code reviewer should determine if the code change matches the intent of the change management ticket.
-4. All required checks must pass before a pull request can be merged. These are automated through GitHub Actions.
-
 # Generated files
 This repository contains generated files and a checksum.
-
-**Do not edit the files in this repository outside of an instance of ServiceNow.**
 
 If you find yourself unable to import your repository due to the presence of files edited outside an instance of ServiceNow, merge commits that mix files from different revisions, or other data that does not match the checksum, you may recover using either of the following techniques:
 * Remove the problem commits:
@@ -32,7 +16,3 @@ If you find yourself unable to import your repository due to the presence of fil
   4. Run `git add -A`
   5. Run `git commit`
   6. Run `git push`
-
-# Installation
-
-Work with your Workgrid Solutions Architect if you would like to install this webhook app in your ServiceNow instance.
